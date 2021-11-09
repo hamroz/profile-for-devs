@@ -16,16 +16,19 @@ projectList = [
         "title": "Social Network",
         "description": "Awesome open source project I am still working on",
     },
-    
 ]
 
 
 def projects(request):
     page = "projects"
     number = 10
-    context = {"page": page, "number": number, 'projects': projectList}
+    context = {"page": page, "number": number, "projects": projectList}
     return render(request, "projects/projects.html", context)
 
 
 def project(request, pk):
-    return render(request, "projects/single-projects.html")
+    projectObj = None
+    for i in projectList:
+        if i["id"] == pk:
+            projectObj = i
+    return render(request, "projects/single-projects.html", {"project": projectObj})
