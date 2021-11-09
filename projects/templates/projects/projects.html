@@ -1,6 +1,30 @@
 {% extends "main.html" %}
 
 {% block content %}
-<h1>Projects Template</h1>
-<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quis nulla repellendus quos rerum soluta ipsum iure placeat quam fugit aspernatur?</p>
+<p>Hello you are on the page {{page}} page </p>
+
+{% if number > 10 %}
+<p>Number is greater than 10</p>
+
+{% elif number == 10 %}
+<p>Number is exactly 10</p>
+
+{% else %}
+<p>Number is less than 10</p>
+
+{% endif %}
+
+<hr>
+ 
+<h1>Projects</h1>
+
+{% for i in projects %}
+
+{{i.title}}
+
+{% endfor %}
+
 {% endblock content %}
+
+
+ 
