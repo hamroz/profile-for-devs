@@ -7,6 +7,7 @@ class Project(models.Model):
     description = models.TextField(
         null=True, blank=True
     )  # null and blank True means filling the description is not a must
+    featured_image = models.ImageField(null=True, blank=True, default="default.jpg")
     demo_link = models.CharField(max_length=2000, null=True, blank=True)
     source_link = models.CharField(max_length=2000, null=True, blank=True)
     tags = models.ManyToManyField("Tag", blank=True)
