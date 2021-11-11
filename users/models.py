@@ -40,6 +40,5 @@ class Skill(models.Model):
         default=uuid.uuid4, unique=True, primary_key=True, editable=False
     )
 
-
     def __str__(self):
         return str(self.name)
