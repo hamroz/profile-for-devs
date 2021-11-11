@@ -24,4 +24,4 @@ class ProjectForm(ModelForm):
 
         # self.fields["title"].widget.attrs.update({"class": "input"}) if we want to select fields indidually and change their class style etc
         for name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'input'})
+            field.widget.attrs.update({"class": "input"})
