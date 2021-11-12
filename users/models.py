@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save, post_delete
 
 
 class Profile(models.Model):
@@ -17,7 +18,7 @@ class Profile(models.Model):
         upload_to="profiles/",
         default="profiles/user-default.png",
     )
-    
+
     social_github = models.CharField(max_length=200, blank=True, null=True)
     social_twitter = models.CharField(max_length=200, blank=True, null=True)
     social_linkedin = models.CharField(max_length=200, blank=True, null=True)
@@ -29,7 +30,7 @@ class Profile(models.Model):
     )
 
     def __str__(self):
-        return str(self.user.username)
+        return str(self.username)
 
 
 class Skill(models.Model):
@@ -43,3 +44,17 @@ class Skill(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+def profileUpdated(sender, instance, created, **kwargs):
+    print("Profile Saved!!!")
+    print("Instance: ", instance)
+    print("CREATED: ", created)
+
+def deleteUser(sender, instance, **kwargs):
+    print("Deleting user ... ")
+    print("Deleting user ..... ")
+    print("Deleting user ....... ")
+
+post_save.connect(profileUpdated, sender=Profile)
+post_delete.connect(deleteUser, sender=Profile)
