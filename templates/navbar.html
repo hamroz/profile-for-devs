@@ -24,6 +24,8 @@
                 <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
                 {% endif %}
                 </li>
+                <li class="header__menuItem"><a href="#">{{user.username}}</a></li>
+                
             </ul>
         </nav>
     </div>

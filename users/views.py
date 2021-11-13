@@ -52,6 +52,11 @@ def registerUser(request):
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
+            
+            messages.success(request, "User account was created!")
+
+            login(request, user)
+            return redirect("profiles")
 
     context = {"page": page, "form": form}
     return render(request, "users/login_register.html", context)

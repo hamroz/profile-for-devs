@@ -16,7 +16,6 @@
 
 <p>Alreay have an account? <a href="{% url 'login' %}">Log In</a> </p>
 
-
 {% else %}
 <form action="{% url 'login' %}" method="POST">
     {% csrf_token %}
