@@ -1,8 +1,7 @@
 {% extends 'main.html' %}
-
 {% load static %}
-
 {% block content %}
+
 
 {% if page == 'register' %}
 
@@ -16,11 +15,10 @@
             <p>Create a new developer account</p>
         </div>
 
-        <form action="{% url 'register' %}" method="POST" class="form auth__form">
-            {%csrf_token%}
+        <form method="POST" action="{% url 'register' %}" class="form auth__form">
+            {% csrf_token %}
 
             {% for field in form %}
-
             <div class="form__field">
                 <label for="formInput#text">{{field.label}}</label>
                 {{field}}
@@ -30,13 +28,11 @@
                 {% endif %} -->
 
                 {% for error in field.errors %}
-
-                <p style="color:red">{{error}}</p>
-
+                <p style="color: red;">{{error}}</p>
                 {% endfor %}
 
-
             </div>
+
             {% endfor %}
 
             <div class="auth__actions">
@@ -52,11 +48,12 @@
 
 
 
-
 {% else %}
 
 <div class="auth">
+
     <div class="card">
+
         <div class="auth__header text-center">
             <a href="/">
                 <img src="{% static 'images/icon.svg' %}" alt="icon" />
@@ -65,9 +62,8 @@
             <p>Hello Developer, Welcome Back!</p>
         </div>
 
-        <form action="{% url 'login' %}" method="POST" class="form auth__form">
+        <form action="" method="POST" class="form auth__form">
             {% csrf_token %}
-
             <!-- Input:Username -->
             <div class="form__field">
                 <label for="formInput#text">Username: </label>
@@ -81,11 +77,13 @@
                 <input class="input input--password" id="formInput#passowrd" type="password" name="password"
                     placeholder="••••••••" />
             </div>
+
             <div class="auth__actions">
                 <input class="btn btn--sub btn--lg" type="submit" value="Log In" />
-                <a href="forgetpassword.html">Forget Password?</a>
+                <a href="#">Forget Password?</a>
             </div>
         </form>
+
         <div class="auth__alternative">
             <p>Don’t have an Account?</p>
             <a href="{% url 'register' %}">Sign Up</a>
@@ -94,9 +92,9 @@
 </div>
 
 
-
-
-
 {% endif %}
+
+
+
 
 {% endblock content %}
