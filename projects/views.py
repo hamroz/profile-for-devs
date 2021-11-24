@@ -18,12 +18,15 @@ def project(request, pk):
 
 @login_required(login_url="login")
 def createProject(request):
+    profile = request.user.profile # get the currently logged in user
     form = ProjectForm
 
     if request.method == "POST":
         form = ProjectForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            project = form.save(commit=False)
+            project.owner = profile
+            project.save()
             return redirect("projects")
     context = {"form": form}
     return render(request, "projects/project_form.html", context)
@@ -31,7 +34,8 @@ def createProject(request):
 
 @login_required(login_url="login")
 def updateProject(request, pk):
-    project = Project.objects.get(id=pk)
+    profile = request.user.profile
+    project = profile.project_set.get(id=pk)
     form = ProjectForm(instance=project)
 
     if request.method == "POST":
