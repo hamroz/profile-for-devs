@@ -3,7 +3,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Profile
+from django.db.models import Q
+from .models import Profile, Skill
 from .forms import CustomUserCreationForm, ProfileForm, SkillForm
 
 
@@ -64,8 +65,15 @@ def registerUser(request):
 
 
 def profiles(request):
-    profiles = Profile.objects.all()
-    context = {"profiles": profiles}
+    search_query = ''
+    
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+
+    skills = Skill.objects.filter(name__icontains=search_query)
+
+    profiles = Profile.objects.distinct().filter(Q(name__icontains=search_query) | Q(short_intro__icontains=search_query) | Q(skill__in=skills))
+    context = {"profiles": profiles, 'search_query': search_query}
     return render(request, "users/profiles.html", context)
 
 
@@ -78,6 +86,7 @@ def userProfile(request, pk):
     context = {"profile": profile, "topSkills": topSkills, "otherSkills": otherSkills}
     return render(request, "users/user-profile.html", context)
 
+
 @login_required(login_url='login')
 def userAccount(request):
     profile = request.user.profile
@@ -87,6 +96,7 @@ def userAccount(request):
     
     context = {"profile":profile, "skills": skills, "projects":projects}
     return render(request, "users/account.html", context)
+
 
 @login_required(login_url='login')
 def editAccount(request):
@@ -102,6 +112,7 @@ def editAccount(request):
         
     context = {"form": form}
     return render(request, "users/profile_form.html", context)
+
 
 @login_required(login_url='login')
 def createSkill(request):
@@ -152,4 +163,3 @@ def deleteSkill(request, pk):
     
     context = {"object": skill}
     return render(request, "delete_template.html", context)
-
