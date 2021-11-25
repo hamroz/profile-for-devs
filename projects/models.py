@@ -22,6 +22,8 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        ordering = ['created'] # in ordering if we put dash (-), it will reverse it. Meaning it will go from newest to the latest
 
 class Review(models.Model):
     VOTE_TYPE = (
