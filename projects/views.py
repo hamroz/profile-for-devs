@@ -7,7 +7,7 @@ from .utils import searchProject, paginateProjects
 def projects(request):
     projects, search_query = searchProject(request)
     
-    custom_range, projects = paginateProjects(request, projects, 6)
+    custom_range, projects = paginateProjects(request, projects, 3)
     
     context = {"projects": projects, 'search_query': search_query, "custom_range": custom_range}
     return render(request, "projects/projects.html", context)
