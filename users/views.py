@@ -18,7 +18,7 @@ def loginUser(request):
 
     if request.method == "POST":
         print(request.POST)
-        username = request.POST["username"]
+        username = request.POST["username"].lower()
         password = request.POST["password"]
 
         try:
@@ -30,7 +30,7 @@ def loginUser(request):
 
         if user is not None:
             login(request, user)
-            return redirect("profiles")
+            return redirect(request.GET['next'] if 'next' in request.GET else 'account')
         else:
             messages.error(request, "Username or Password is incorrect")
 
@@ -207,3 +207,8 @@ def deleteSkill(request, pk):
     
     context = {"object": skill}
     return render(request, "delete_template.html", context)
+
+@login_required(login_url='login')
+def inbox(request):
+    context = {}
+    return render(request, "users/inbox.html", context)
