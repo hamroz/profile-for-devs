@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 from users.models import Profile
 
+
 class Project(models.Model):
     owner = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=200)
@@ -23,25 +24,29 @@ class Project(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['-vote_ratio', '-vote_total', 'title'] # in ordering if we put dash (-), it will reverse it. Meaning it will go from newest to the latest
+        ordering = [
+            "-vote_ratio",
+            "-vote_total",
+            "title",
+        ]  # in ordering if we put dash (-), it will reverse it. Meaning it will go from newest to the latest
 
     @property
     def reviewers(self):
-        queryset = self.review_set.all().values_list('owner__id', flat=True)
+        queryset = self.review_set.all().values_list("owner__id", flat=True)
         return queryset
-        
-    
+
     @property
     def getVoteCount(self):
         reviews = self.review_set.all()
-        upVotes = reviews.filter(value='up').count()
+        upVotes = reviews.filter(value="up").count()
         totalVotes = reviews.count()
-        
+
         ratio = (upVotes / totalVotes) * 100
         self.vote_total = totalVotes
         self.vote_ratio = ratio
 
         self.save()
+
 
 class Review(models.Model):
     VOTE_TYPE = (
@@ -56,9 +61,9 @@ class Review(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=False
     )
-    
+
     class Meta:
-        unique_together = [['owner', 'project']]
+        unique_together = [["owner", "project"]]
 
     def __str__(self):
         return self.value

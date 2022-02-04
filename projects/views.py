@@ -5,39 +5,43 @@ from .models import Project, Tag
 from .forms import ProjectForm, ReviewForm
 from .utils import searchProject, paginateProjects
 
+
 def projects(request):
     projects, search_query = searchProject(request)
-    
+
     custom_range, projects = paginateProjects(request, projects, 6)
-    
-    context = {"projects": projects, 'search_query': search_query, "custom_range": custom_range}
+
+    context = {
+        "projects": projects,
+        "search_query": search_query,
+        "custom_range": custom_range,
+    }
     return render(request, "projects/projects.html", context)
 
 
 def project(request, pk):
     projectObj = Project.objects.get(id=pk)
     form = ReviewForm()
-    
-    if request.method == 'POST':
+
+    if request.method == "POST":
         form = ReviewForm(request.POST)
         review = form.save(commit=False)
         review.project = projectObj
         review.owner = request.user.profile
         review.save()
-        
 
         projectObj.getVoteCount
-        
-        messages.success(request, 'Your review was successfully submitted!')
-        return redirect('project', pk=projectObj.id)
-            
+
+        messages.success(request, "Your review was successfully submitted!")
+        return redirect("project", pk=projectObj.id)
+
     context = {"project": projectObj, "form": form}
     return render(request, "projects/single-projects.html", context)
 
 
 @login_required(login_url="login")
 def createProject(request):
-    profile = request.user.profile # get the currently logged in user
+    profile = request.user.profile  # get the currently logged in user
     form = ProjectForm
 
     if request.method == "POST":
